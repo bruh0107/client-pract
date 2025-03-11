@@ -14,23 +14,23 @@
 <div id="app">
     <div class="product">
         <div class="product-image">
-            <img v-bind:alt="altText" v-bind:src="image"/>
+            <img :alt="altText" :src="image"/>
         </div>
         <div class="product-info">
-            <h1>{{ product }}</h1>
+            <h1>{{ title }}</h1>
             <a v-bind:href="link">More products like this</a>
             <p v-show="inventory <= 10 && inventory > 0">Almost sold out!</p>
             <p v-if="inStock">In Stock</p>
             <p v-else :style="{ textDecoration: inStock ? 'none' : 'line-through' }">Out of Stock</p>
-            <span v-show="onSale">On Sale</span>
+            <span>{{ sale }}</span>
             <ul>
                 <li v-for="detail in details">{{ detail }}</li>
             </ul>
             <div class="color-box"
                  :style="{ backgroundColor: variant.variantColor }"
-                 v-for="variant in variants"
+                 v-for="(variant, index) in variants"
                  :key="variant.variantId"
-                 @mouseover="updateProduct(variant.variantImage)"
+                 @mouseover="updateProduct(index)"
             >
             </div>
             <ul>
