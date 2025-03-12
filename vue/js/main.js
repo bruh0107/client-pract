@@ -118,8 +118,14 @@ Vue.component('product', {
         }
     },
     mounted() {
+        const savedReviews = localStorage.getItem('productReviews')
+        if (savedReviews) {
+            this.reviews = JSON.parse(savedReviews)
+        }
+
         eventBus.$on('review-submitted', productReview => {
             this.reviews.push(productReview)
+            localStorage.setItem('productReviews', JSON.stringify(this.reviews))
         })
     }
 })
@@ -284,11 +290,19 @@ let app = new Vue({
     el: '#app',
     data: {
         premium: true,
-        cart: []
+        cart: [],
+        isCartAnimation: false
     },
     methods: {
         updateCart(id) {
             this.cart.push(id)
+            this.cartAnimation()
+        },
+        cartAnimation() {
+            this.isCartAnimation = true
+            setTimeout(() => {
+                this.isCartAnimation = false
+            }, 500)
         },
         removeFromCart(id) {
             this.cart.splice(this.cart.indexOf(id), 1)
