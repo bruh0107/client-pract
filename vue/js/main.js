@@ -88,7 +88,6 @@ Vue.component('product', {
         },
         updateProduct(index) {
             this.selectedVariant = index
-            console.log(index)
         },
     },
     computed: {
@@ -262,9 +261,7 @@ Vue.component('product-tabs', {
          <p>Shipping cost: {{ shipping }}</p>
        </div>
        <div v-show="selectedTab === 'Details'">
-         <ul>
-            <li v-for="detail in details">{{ detail }}</li>
-         </ul>
+         <product-details :details="details"></product-details>
        </div>
      </div>
 
