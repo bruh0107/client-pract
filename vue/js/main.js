@@ -21,8 +21,6 @@ Vue.component('product', {
             <p v-if="inStock">In Stock</p>
             <p v-else :style="{ textDecoration: inStock ? 'none' : 'line-through' }">Out of Stock</p>
             <span>{{ sale }}</span>
-            <product-details :details="details"></product-details>
-            <p>Shipping: {{ shipping }}</p>
             <div class="color-box"
                  :style="{ backgroundColor: variant.variantColor }"
                  v-for="(variant, index) in variants"
@@ -46,7 +44,11 @@ Vue.component('product', {
             >
                 Remove from cart</button>
         </div>
-        <product-tabs :reviews="reviews"></product-tabs>
+        <product-tabs 
+            :reviews="reviews"
+            :shipping="shipping"
+            :details="details"
+        ></product-tabs>
     </div>
     `,
     data() {
@@ -225,6 +227,14 @@ Vue.component('product-tabs', {
             type: Array,
             required: false,
         },
+        shipping: {
+            type: String,
+            required: true,
+        },
+        details: {
+            type: Array,
+            required: true,
+        }
     },
     template: `
    <div>   
@@ -239,21 +249,29 @@ Vue.component('product-tabs', {
          <p v-if="!reviews.length">There are no reviews yet.</p>
          <ul>
            <li v-for="review in reviews">
-           <p>{{ review.name }}</p>
-           <p>Rating: {{ review.rating }}</p>
-           <p>{{ review.review }}</p>
+               <p>{{ review.name }}</p>
+               <p>Rating: {{ review.rating }}</p>
+               <p>{{ review.review }}</p>
            </li>
          </ul>
        </div>
        <div v-show="selectedTab === 'Make a Review'">
          <product-review></product-review>
        </div>
+       <div v-show="selectedTab === 'Shipping'">
+         <p>Shipping cost: {{ shipping }}</p>
+       </div>
+       <div v-show="selectedTab === 'Details'">
+         <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+         </ul>
+       </div>
      </div>
 
  `,
     data() {
         return {
-            tabs: ['Reviews', 'Make a Review'],
+            tabs: ['Reviews', 'Make a Review', 'Shipping', 'Details'],
             selectedTab: 'Reviews'
         }
     },
